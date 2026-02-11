@@ -7,5 +7,6 @@ export default defineConfig({
         "/**": "./src/index.ts",
     },
     // Ensure we use the correct node runtime
-    preset: "node-server",
+    // preset: "node-server",
+    preset: "vercel"
 });

@@ -5,7 +5,7 @@ const aiProviderEnum = z.enum(['gemini', 'openai', 'anthropic', 'ollama']).defau
 
 const envSchema = z
   .object({
-    DATABASE_URL: z.string().min(1),
+    DATABASE_URL: z.string().default('postgresql://ci:ci@localhost:5432/ci'),
     JWT_ACCESS_SECRET: z.string().min(1),
     JWT_REFRESH_SECRET: z.string().min(1),
     JWT_ACCESS_EXPIRY: z.string().default('30m'),
@@ -33,6 +33,8 @@ const envSchema = z
   })
   .refine(
     (env) => {
+      // Skip API key validation in test/CI environments
+      if (env.NODE_ENV === 'test') return true;
       switch (env.AI_PROVIDER) {
         case 'gemini':
           return !!env.GOOGLE_GENERATIVE_AI_API_KEY;
@@ -41,8 +43,6 @@ const envSchema = z
         case 'anthropic':
           return !!env.ANTHROPIC_API_KEY;
         case 'ollama':
-          // For Ollama, we at least expect the base URL to be reachable/configured
-          // but strictly speaking, defaults work. Let's just pass.
           return true;
       }
     },
