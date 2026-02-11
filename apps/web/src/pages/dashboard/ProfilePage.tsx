@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Loader2, Check, AlertCircle, Eye, EyeOff } from "lucide-react";
 
-const API_BASE = import.meta.env.VITE_API_URL || "";
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 export default function ProfilePage() {
     const { user, token } = useAuth();
@@ -178,8 +178,8 @@ export default function ProfilePage() {
                         {profileMsg && (
                             <div
                                 className={`flex items-center gap-2 rounded-md p-3 text-sm ${profileMsg.type === "success"
-                                        ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-                                        : "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400"
+                                    ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                                    : "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400"
                                     }`}
                             >
                                 {profileMsg.type === "success" ? (
@@ -264,8 +264,8 @@ export default function ProfilePage() {
                         {passwordMsg && (
                             <div
                                 className={`flex items-center gap-2 rounded-md p-3 text-sm ${passwordMsg.type === "success"
-                                        ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-                                        : "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400"
+                                    ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                                    : "bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400"
                                     }`}
                             >
                                 {passwordMsg.type === "success" ? (

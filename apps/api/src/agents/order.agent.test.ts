@@ -2,11 +2,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { OrderAgent } from './order.agent.js';
 
 // Mock dependencies
-vi.mock('ai', () => ({
-    generateText: vi.fn(),
-    streamText: vi.fn(),
-    tool: vi.fn((config) => ({ ...config, execute: config.execute })),
-}));
+vi.mock('ai', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('ai')>();
+    return {
+        ...actual,
+        generateText: vi.fn(),
+        streamText: vi.fn(),
+        tool: vi.fn((config: any) => ({ ...config, execute: config.execute })),
+    };
+});
 
 vi.mock('../config/ai.js', () => ({
     agentModel: vi.fn(),
