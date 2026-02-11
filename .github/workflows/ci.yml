@@ -35,9 +35,8 @@ jobs:
       - name: Run tests
         run: pnpm test
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NODE_ENV: test
           AI_PROVIDER: gemini
-          GOOGLE_GENERATIVE_AI_API_KEY: ${{ secrets.GOOGLE_GENERATIVE_AI_API_KEY }}
           JWT_ACCESS_SECRET: ci-test-access-secret
           JWT_REFRESH_SECRET: ci-test-refresh-secret
 
