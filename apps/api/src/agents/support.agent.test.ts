@@ -2,11 +2,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { SupportAgent } from './support.agent.js';
 
 // Mock dependencies
-vi.mock('ai', () => ({
-    generateText: vi.fn(),
-    streamText: vi.fn(),
-    tool: vi.fn((config) => ({ ...config, execute: config.execute })),
-}));
+vi.mock('ai', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('ai')>();
+    return {
+        ...actual,
+        generateText: vi.fn(),
+        streamText: vi.fn(),
+        tool: vi.fn((config: any) => ({ ...config, execute: config.execute })),
+    };
+});
 
 vi.mock('../config/ai.js', () => ({
     agentModel: vi.fn(),
@@ -30,13 +34,16 @@ describe('SupportAgent', () => {
         const result = await agent.execute({
             userMessage: 'How do I reset my password?',
             userId: 'user-1',
-            conversationHistory: [],
+            conversationHistory: [
+                { role: 'user', content: 'How do I reset my password?' },
+            ],
             conversationId: 'conv-1',
         });
 
         expect(streamText).toHaveBeenCalled();
         const callArgs = (streamText as any).mock.calls[0][0];
         expect(callArgs.tools).toHaveProperty('searchArticles');
+        // Verify the user message is in the messages array (from conversationHistory)
         expect(callArgs.messages.some((m: any) => m.content === 'How do I reset my password?')).toBe(true);
         expect(result).toHaveProperty('textStream');
     });

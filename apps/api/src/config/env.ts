@@ -3,11 +3,13 @@ import 'dotenv/config';
 
 const aiProviderEnum = z.enum(['gemini', 'openai', 'anthropic', 'ollama']).default('gemini');
 
+const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST;
+
 const envSchema = z
   .object({
     DATABASE_URL: z.string().default('postgresql://ci:ci@localhost:5432/ci'),
-    JWT_ACCESS_SECRET: z.string().min(1),
-    JWT_REFRESH_SECRET: z.string().min(1),
+    JWT_ACCESS_SECRET: z.string().min(1).default(isTest ? 'test-access-secret' : ''),
+    JWT_REFRESH_SECRET: z.string().min(1).default(isTest ? 'test-refresh-secret' : ''),
     JWT_ACCESS_EXPIRY: z.string().default('30m'),
     JWT_REFRESH_EXPIRY: z.string().default('7d'),
     PORT: z.coerce.number().default(3000),

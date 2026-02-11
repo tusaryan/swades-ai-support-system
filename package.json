@@ -15,7 +15,8 @@
     "db:generate": "turbo db:generate --filter=api",
     "db:migrate": "turbo db:migrate --filter=api",
     "db:studio": "turbo db:studio --filter=api",
-    "db:setup": "pnpm db:push && pnpm db:seed"
+    "db:setup": "pnpm db:push && pnpm db:seed",
+    "test": "pnpm --filter api test"
   },
   "devDependencies": {
     "shadcn": "^3.8.4",

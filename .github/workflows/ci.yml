@@ -33,7 +33,7 @@ jobs:
         run: pnpm turbo build --filter=api
 
       - name: Run tests
-        run: pnpm test
+        run: pnpm --filter api test -- --run
         env:
           NODE_ENV: test
           AI_PROVIDER: gemini

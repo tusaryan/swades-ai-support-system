@@ -1,9 +1,25 @@
 import type { Context, Next } from 'hono';
 
-export async function corsMiddleware(c: Context, next: Next) {
-  const origin = c.req.header('Origin') || '*';
+// Allowed origins from environment (comma-separated) or fallback to allow all in dev
+const allowedOrigins = (process.env.CORS_ORIGIN || '')
+  .split(',')
+  .map((o) => o.trim().replace(/\/$/, '')) // strip trailing slashes
+  .filter(Boolean);
 
-  c.header('Access-Control-Allow-Origin', origin);
+export async function corsMiddleware(c: Context, next: Next) {
+  const origin = c.req.header('Origin') || '';
+
+  // In development or when no CORS_ORIGIN is set, allow all origins
+  const isAllowed =
+    allowedOrigins.length === 0 ||
+    allowedOrigins.includes(origin) ||
+    process.env.NODE_ENV === 'development';
+
+  const responseOrigin = isAllowed ? origin || '*' : '';
+
+  if (responseOrigin) {
+    c.header('Access-Control-Allow-Origin', responseOrigin);
+  }
   c.header('Access-Control-Allow-Credentials', 'true');
   c.header(
     'Access-Control-Allow-Headers',
@@ -18,4 +34,3 @@ export async function corsMiddleware(c: Context, next: Next) {
 
   await next();
 }
-
