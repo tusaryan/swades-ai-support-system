@@ -11,6 +11,9 @@
     "rootDir": ".",
     "resolveJsonModule": true,
     "declaration": true,
+    "typeRoots": [
+      "./node_modules/@types"
+    ],
     "types": [
       "node"
     ],

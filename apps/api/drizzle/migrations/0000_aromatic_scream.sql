@@ -1,3 +1,5 @@
+-- apps/api/drizzle/migrations/0000_aromatic_scream.sql
+
 CREATE TYPE "public"."agent_type" AS ENUM('router', 'support', 'order', 'billing');--> statement-breakpoint
 CREATE TYPE "public"."conversation_status" AS ENUM('active', 'archived');--> statement-breakpoint
 CREATE TYPE "public"."invoice_status" AS ENUM('paid', 'pending', 'refunded', 'failed');--> statement-breakpoint

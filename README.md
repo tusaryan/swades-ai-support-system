@@ -241,6 +241,7 @@ node --import tsx/esm drizzle/seed.ts
 
 ```bash
 # From root — starts both API and Web concurrently
+cd ../.. #to return to the Project root folder (only if not in root folder)
 pnpm dev
 ```
 
@@ -350,6 +351,10 @@ Test coverage includes:
 └─────────────┘     └──────────────┘     └───────────────┘
 ```
 
+#### System Flow
+
+![System Flow](apps/web/public/system-flow.png)
+
 
 ### GitHub Actions CI/CD
 
@@ -369,6 +374,10 @@ Create `.github/workflows/ci.yml` for automated testing and deployment:
 
 
 ## 🔒 Security
+
+#### Authentication Flow
+
+![Authentication Flow](apps/web/public/authentication-flow.png)
 
 | Feature | Implementation |
 |---------|---------------|
@@ -403,6 +412,7 @@ Create `.github/workflows/ci.yml` for automated testing and deployment:
 | Issue | Solution |
 |-------|----------|
 | `ECONNREFUSED` on port 5432 | Start Docker: `docker compose up -d` |
+| `database "support_system" does not exist` | A local PostgreSQL may be shadowing Docker on port 5432. Run `brew services stop postgresql` (or `postgresql@16`) then retry |
 | `relation "messages" does not exist` | Run `npx drizzle-kit push` to create tables |
 | `API key missing` error | Check `AI_PROVIDER` matches the key set in `.env` |
 | Rate limit errors | Wait 60s or increase `RATE_LIMIT_MAX_REQUESTS` |
